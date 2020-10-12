@@ -84,6 +84,12 @@ letter [_a-zA-Z]
     yylval.node = new_node(yylineno, "ID", ID, s);
     return ID;
 }
+'\{letter}'\ {
+    char *s = malloc(strlen(yytext) + 1);
+    strcpy(s, yytext);
+    yylval.node = new_node(yylineno, "CHAR", CHAR, s);
+    return CHAR;
+}
 "//"[^\n]* {}
 "/*" {
     char a = input(), b = input();
