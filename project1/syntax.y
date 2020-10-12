@@ -16,7 +16,7 @@
 /* declared tokens */
 %token <node> INT FLOAT CHAR ID
 %token <node> SEMI COMMA
-%token <node> ASSIGN RELOP PLUS MINUS STAR DIV AND OR DOT NOT
+%token <node> ASSIGN LE LT GE GT PLUS MINUS STAR DIV AND OR DOT NOT
 %token <node> TYPE
 %token <node> LP RP LB RB LC RC
 %token <node> STRUCT RETURN IF ELSE WHILE
@@ -32,7 +32,7 @@
 %right ASSIGN
 %left OR
 %left AND
-%left RELOP
+%left LE LT GE GT
 %left PLUS MINUS
 %left STAR DIV
 %right NOT UMINUS
