@@ -84,7 +84,7 @@ letter [_a-zA-Z]
     yylval.node = new_node(yylineno, "ID", ID, s);
     return ID;
 }
-'\{letter}'\ {
+\'{letter}\' {
     char *s = malloc(strlen(yytext) + 1);
     strcpy(s, yytext);
     yylval.node = new_node(yylineno, "CHAR", CHAR, s);
