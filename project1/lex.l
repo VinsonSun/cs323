@@ -44,7 +44,7 @@ letter [_a-zA-Z]
     yylval.node = new_node(yylineno, "WHILE", WHILE, NULL);
     return WHILE;
 }
-"int"|"float" {
+"int"|"float"|"char" {
     char *s = malloc(strlen(yytext) + 1);
     strcpy(s, yytext);
     yylval.node = new_node(yylineno, "TYPE", TYPE, s);
