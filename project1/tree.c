@@ -1,4 +1,4 @@
-#include "syntax_tree.h"
+#include "tree.h"
 #include "syntax.tab.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -23,7 +23,10 @@ Node *new_node(int line, char *nodeName, int type, void *val){
     else if(type == FLOAT){
         node->val.f = *(float *)val;
     }
-    else if(type == ID || type == TYPE || type == RELOP){
+    else if(type == CHAR){
+        node->val.s = *(char*)val;
+    }
+    else if(type == ID || type == TYPE || type == GT || type == LT || type == LE || type == GE || type == NE || type == EQ){
         node->val.s = malloc(strlen(val) + 1);
         strcpy(node->val.s, val);
     }
@@ -56,6 +59,9 @@ void pre_order(Node *t){
     }
     else if(t->type == FLOAT){
         printf("%s: %f\n", t->name, t->val.f);
+    }
+    else if(t->type == CHAR){
+        printf("%s: '%s'\n",t->name, t->val.s);
     }
     else if(t->type == ID || t->type == TYPE){
         printf("%s: %s\n", t->name, t->val.s);
