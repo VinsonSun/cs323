@@ -101,15 +101,46 @@ letter [_a-zA-Z]
     return COMMA;
 }
 "=" {
-    yylval.node = new_node(yylineno, "ASSIGNOP", ASSIGNOP, NULL);
-    return ASSIGNOP;
+    yylval.node = new_node(yylineno, "ASSIGN", ASSIGN, NULL);
+    return ASSIGN;
 }
-">"|"<"|">="|"<="|"=="|"!=" {
+">" {
     char s[3] = "";
     strcpy(s, yytext);
-    yylval.node = new_node(yylineno, "RELOP", RELOP, s);
-    return RELOP;
+    yylval.node = new_node(yylineno, "GT", GT, s);
+    return GT;
 }
+"<" {
+    char s[3] = "";
+    strcpy(s, yytext);
+    yylval.node = new_node(yylineno, "LT", LT, s);
+    return LT;
+}
+">=" {
+    char s[3] = "";
+    strcpy(s, yytext);
+    yylval.node = new_node(yylineno, "GE", GE, s);
+    return GE;
+}
+"<=" {
+    char s[3] = "";
+    strcpy(s, yytext);
+    yylval.node = new_node(yylineno, "LE", LE, s);
+    return LE;
+}
+"==" {
+    char s[3] = "";
+    strcpy(s, yytext);
+    yylval.node = new_node(yylineno, "EQ", EQ, s);
+    return EQ;
+}
+"!=" {
+    char s[3] = "";
+    strcpy(s, yytext);
+    yylval.node = new_node(yylineno, "NE", NE, s);
+    return NE;
+}
+
 \+ {
     yylval.node = new_node(yylineno, "PLUS", PLUS, NULL);
     return PLUS;
