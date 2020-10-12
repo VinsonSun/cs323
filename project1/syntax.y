@@ -16,7 +16,7 @@
 /* declared tokens */
 %token <node> INT FLOAT CHAR ID
 %token <node> SEMI COMMA
-%token <node> ASSIGN LE LT GE GT PLUS MINUS STAR DIV AND OR DOT NOT
+%token <node> ASSIGN LE LT GE GT NE EQ PLUS MINUS STAR DIV AND OR DOT NOT
 %token <node> TYPE
 %token <node> LP RP LB RB LC RC
 %token <node> STRUCT RETURN IF ELSE WHILE
@@ -32,7 +32,7 @@
 %right ASSIGN
 %left OR
 %left AND
-%left LE LT GE GT
+%left LE LT GE GT NE EQ
 %left PLUS MINUS
 %left STAR DIV
 %right NOT UMINUS
@@ -292,7 +292,7 @@ Dec : VarDec{
     $$ = new_node(@1.first_line, "Dec", 0, NULL);
     add_child($$, $1);
 }
-    | VarDec ASSIGNOP Exp{
+    | VarDec ASSIGN Exp{
     $$ = new_node(@1.first_line, "Dec", 0, NULL);
     add_child($$, $1);
     add_child($$, $2);
@@ -301,7 +301,7 @@ Dec : VarDec{
     ;
 
 /* Expressions */
-Exp : Exp ASSIGNOP Exp{
+Exp : Exp ASSIGN Exp{
     $$ = new_node(@1.first_line, "Exp", 0, NULL);
     add_child($$, $1);
     add_child($$, $2);
@@ -338,6 +338,18 @@ Exp : Exp ASSIGNOP Exp{
     add_child($$, $3);
 }
     | Exp LE Exp{
+    $$ = new_node(@1.first_line, "Exp", 0, NULL);
+    add_child($$, $1);
+    add_child($$, $2);
+    add_child($$, $3);
+}   
+    | Exp EQ Exp{
+    $$ = new_node(@1.first_line, "Exp", 0, NULL);
+    add_child($$, $1);
+    add_child($$, $2);
+    add_child($$, $3);
+}
+    | Exp NE Exp{
     $$ = new_node(@1.first_line, "Exp", 0, NULL);
     add_child($$, $1);
     add_child($$, $2);
