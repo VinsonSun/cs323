@@ -22,7 +22,7 @@
 %token <node> STRUCT RETURN IF ELSE WHILE
 
 %type <node> Program ExtDefList ExtDef ExtDecList
-%type <node> Specifier StructSpecifier OptTag Tag
+%type <node> Specifier StructSpecifier
 %type <node> VarDec FunDec VarList ParamDec
 %type <node> CompSt StmtList Stmt
 %type <node> DefList Def DecList Dec
@@ -111,7 +111,7 @@ Specifier : TYPE{
 }
     ;
 
-StructSpecifier : STRUCT OptTag LC DefList RC{
+StructSpecifier : STRUCT ID LC DefList RC{
     $$ = new_node(@1.first_line, "StructSpecifier", 0, NULL);
     add_child($$, $1);
     add_child($$, $2);
@@ -119,25 +119,10 @@ StructSpecifier : STRUCT OptTag LC DefList RC{
     add_child($$, $4);
     add_child($$, $5);
 }
-    | STRUCT Tag{
+    | STRUCT ID{
     $$ = new_node(@1.first_line, "StructSpecifier", 0, NULL);
     add_child($$, $1);
     add_child($$, $2);
-}
-    ;
-
-OptTag : ID{
-    $$ = new_node(@1.first_line, "OptTag", 0, NULL);
-    add_child($$, $1);
-}
-    |{
-    $$ = NULL;
-}
-    ;
-
-Tag : ID{
-    $$ = new_node(@1.first_line, "Tag", 0, NULL);
-    add_child($$, $1);
 }
     ;
 
