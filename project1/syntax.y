@@ -319,7 +319,25 @@ Exp : Exp ASSIGNOP Exp{
     add_child($$, $2);
     add_child($$, $3);
 }
-    | Exp RELOP Exp{
+    | Exp GE Exp{
+    $$ = new_node(@1.first_line, "Exp", 0, NULL);
+    add_child($$, $1);
+    add_child($$, $2);
+    add_child($$, $3);
+}   
+    | Exp LT Exp{
+    $$ = new_node(@1.first_line, "Exp", 0, NULL);
+    add_child($$, $1);
+    add_child($$, $2);
+    add_child($$, $3);
+}
+    | Exp GT Exp{
+    $$ = new_node(@1.first_line, "Exp", 0, NULL);
+    add_child($$, $1);
+    add_child($$, $2);
+    add_child($$, $3);
+}
+    | Exp LE Exp{
     $$ = new_node(@1.first_line, "Exp", 0, NULL);
     add_child($$, $1);
     add_child($$, $2);
