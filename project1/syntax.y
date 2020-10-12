@@ -14,9 +14,9 @@
 }
 
 /* declared tokens */
-%token <node> INT FLOAT ID
+%token <node> INT FLOAT CHAR ID
 %token <node> SEMI COMMA
-%token <node> ASSIGNOP RELOP PLUS MINUS STAR DIV AND OR DOT NOT
+%token <node> ASSIGN RELOP PLUS MINUS STAR DIV AND OR DOT NOT
 %token <node> TYPE
 %token <node> LP RP LB RB LC RC
 %token <node> STRUCT RETURN IF ELSE WHILE
@@ -29,7 +29,7 @@
 %type <node> Exp Args
 
 
-%right ASSIGNOP
+%right ASSIGN
 %left OR
 %left AND
 %left RELOP
@@ -396,6 +396,10 @@ Exp : Exp ASSIGNOP Exp{
     add_child($$, $1);
 }
     | INT{
+    $$ = new_node(@1.first_line, "Exp", 0, NULL);
+    add_child($$, $1);
+}
+    | CHAR{
     $$ = new_node(@1.first_line, "Exp", 0, NULL);
     add_child($$, $1);
 }
