@@ -24,7 +24,7 @@ int symtab_insert(symtab *self, char *key, VAL_T value){
         symtab *parent;   //表示双亲结点；
 	symtab *head = self;
 	symtab *p=(symtab *)malloc(sizeof(symtab));
-	strcmp(p->entry.key, key);   //保存结点数据；
+	strcpy(p->entry.key, key);   //保存结点数据；
         p->entry.value = value;
 	p->left=p->right=NULL;  //左右子树置空；
 	
@@ -45,9 +45,15 @@ int symtab_insert(symtab *self, char *key, VAL_T value){
 }
 
 VAL_T symtab_lookup(symtab *self, char *key){
-
+	symtab *p = self;
+	if(strcmp(p->entry.key,key)==0){
+		return p->entry.value;
+	}
+	symtab_lookup(p->left,key);
+	symtab_lookup(p->right,key);
 }
 
 int symtab_remove(symtab *self, char *key){
-
+	VAL_T value = symtab_lookup(self,key);
+	
 }
