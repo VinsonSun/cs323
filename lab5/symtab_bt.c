@@ -24,7 +24,7 @@ int symtab_insert(symtab *self, char *key, VAL_T value){
         symtab *parent;   //表示双亲结点；
 	symtab *head = self;
 	symtab *p=(symtab *)malloc(sizeof(symtab));
-	strcmp(ptr->entry.key, key);   //保存结点数据；
+	strcmp(p->entry.key, key);   //保存结点数据；
         p->entry.value = value;
 	p->left=p->right=NULL;  //左右子树置空；
 	
