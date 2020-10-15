@@ -1,5 +1,5 @@
 #include "symtab.h"
-
+#include <string.h>
 /*
  * symbol table type, binary tree impl
  */
@@ -21,39 +21,70 @@ symtab *symtab_init(){
 }
 
 int symtab_insert(symtab *self, char *key, VAL_T value){
-        symtab *parent;   //表示双亲结点；
-	symtab *head = self;
-	symtab *p=(symtab *)malloc(sizeof(symtab));
-	strcpy(p->entry.key, key);   //保存结点数据；
-        p->entry.value = value;
-	p->left=p->right=NULL;  //左右子树置空；
-	
-	//查找需要添加的父结点，这个父结点是度为0的结点；
-	while(head) 
-	{
-		parent=head;
-		if(value<head->entry.value)   //若关键字小于结点的数据；
-			head=head->left; //在左子树上查找； 
-		else   //若关键字大于结点的数据；
-			head=head->right;  //在右子树上查找；
-	}
-	//判断添加到左子树还是右子树；
-	if(value<parent->entry.value)   //小于父结点；
-		parent->left=p;    //添加到左子树；
-	else    //大于父结点；
-		parent->right=p;   //添加到右子树；
+    if(symtab_lookup(self,key)!=-1&&strcmp(self->entry.key,"")!=0){
+        return 0;
+    }
+    else{
+        if(strcmp(self->entry.key,"")==0){
+            entry_init(&self->entry,key,value);
+            return 1;
+        }
+        else{
+            struct symtab *current = self;
+            struct symtab *parent = NULL;
+
+            struct symtab *node = malloc(sizeof(symtab));
+            memset(node, '\0', sizeof(symtab));
+            entry_init(&node->entry,key,value);
+            while(1){
+                parent = current;
+                if(value < parent->entry.value) {
+                    current = current->left;
+                    if(current == NULL) {
+                        parent->left = node;
+                        return 1;
+                    }
+                }
+                else{
+                    current = current->right;
+                    if(current == NULL) {
+                        parent->right = node;
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
 }
 
 VAL_T symtab_lookup(symtab *self, char *key){
-	symtab *p = self;
-	if(strcmp(p->entry.key,key)==0){
-		return p->entry.value;
-	}
-	symtab_lookup(p->left,key);
-	symtab_lookup(p->right,key);
+    symtab *ptr = self;
+    if(ptr ==NULL){
+        return -1;
+    }
+    if(strcmp(ptr->entry.key,key)==0){
+        return ptr->entry.value;
+    }
+    int result = symtab_lookup(ptr->left,key);
+    if(result!=-1){
+        return result;
+    }
+    return symtab_lookup(ptr->right,key);
+}
+// not delete, just a replace.
+int symtab_remove(symtab *self, char *key){
+    symtab *ptr = self;
+    if(ptr ==NULL){
+        return 0;
+    }
+    if(strcmp(ptr->entry.key,key)==0){
+        strcpy(ptr->entry.key,"@@@\0");
+        return 1;
+    }
+    int result = symtab_remove(ptr->left, key);
+    if(result!=0){
+        return 1;
+    }
+    return symtab_remove(ptr->right,key);
 }
 
-int symtab_remove(symtab *self, char *key){
-	VAL_T value = symtab_lookup(self,key);
-	
-}
