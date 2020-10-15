@@ -26,7 +26,8 @@ Node *new_node(int line, char *nodeName, int type, void *val){
     else if(type == CHAR){
         node->val.s = (char*)val;
     }
-    else if(type == ID || type == TYPE || type == GT || type == LT || type == LE || type == GE || type == NE || type == EQ){
+    else if(type == ID || type == TYPE || type == GT || type == LT || type == LE ||
+    type == GE || type == NE || type == EQ){
         node->val.s = malloc(strlen(val) + 1);
         strcpy(node->val.s, val);
     }
@@ -41,16 +42,12 @@ void add_child(Node *fa, Node *ch){
     fa->child_num++;
 }
 
-void print_space(int n){
-    for(int i = 0; i < n; i++){
-        printf(" ");
-    }
-}
-
 void pre_order(Node *t){
     if(t == NULL)
         return;
-    print_space(space_num);
+    for(int i = 0; i < n; i++){
+        printf(" ");
+    }
     if(t->type == 0){
         printf("%s (%d)\n", t->name, t->line);
     }
